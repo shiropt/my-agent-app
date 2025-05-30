@@ -1,16 +1,25 @@
 import { VoltAgent, Agent } from "@voltagent/core";
-import { VercelAIProvider } from "@voltagent/vercel-ai";
+import { GoogleGenAIProvider } from "@voltagent/google-ai";
+import { weatherTool, calculatorTool, timeTool } from "./tools/index.js";
 
-import { openai } from "@ai-sdk/openai";
+// Using API Key configuration from above
+const googleProvider = new GoogleGenAIProvider({
+  apiKey: process.env.GEMINI_API_KEY,
+});
+// Or using Vertex AI configuration
+// const googleProvider = new GoogleGenAIProvider({ project: '...', location: '...' });
 
 const agent = new Agent({
-  name: "my-agent-app",
-  instructions:
-    "A helpful assistant that answers questions without using tools",
-  llm: new VercelAIProvider(),
-  model: openai("gpt-4o-mini"),
-  tools: [],
+  name: "Google Gemini Agent",
+  instructions: "An agent powered by Google Gemini with useful tools",
+  llm: googleProvider,
+  model: "gemini-1.5-flash", // Specify the desired Google model ID
+  markdown: true,
+  tools: [weatherTool, calculatorTool, timeTool], // ツールを追加
 });
+
+const response = await agent.generateText("横浜の天気は");
+console.log("こんにちは", response.text);
 
 new VoltAgent({
   agents: {
