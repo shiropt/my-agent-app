@@ -57,6 +57,7 @@ app.post(
       });
       return;
     }
+    console.log("リクエストを受け付けました", req.body);
 
     if (!url) {
       res.status(400).json({
