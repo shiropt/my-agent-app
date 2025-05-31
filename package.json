@@ -15,7 +15,8 @@
     "start": "node -r dotenv/config dist/app.js",
     "volt": "volt",
     "server": "tsx watch --env-file=.env ./src/app.ts",
-    "build:server": "tsc && node dist/app.js"
+    "build:server": "tsc && node dist/app.js",
+    "postinstall": "node fix-esm.cjs"
   },
   "dependencies": {
     "@ai-sdk/openai": "^1.3.10",
