@@ -11,7 +11,7 @@ interface AgentRequestBody {
 
 // レスポンスボディの型定義
 interface AgentResponseBody {
-  summary: string;
+  summary?: string;
   token?: string;
   challenge?: string;
   type?: string;
@@ -43,14 +43,21 @@ app.get("/", async (req: Request, res: Response<HealthCheckResponse>) => {
 });
 
 app.post(
-  "/",
+  "/slack/events",
   async (
     req: Request<{}, AgentResponseBody, AgentRequestBody>,
     res: Response<AgentResponseBody | ErrorResponse>
   ): Promise<void> => {
     const { url, token, challenge, type } = req.body;
+    // URL Verification か通常イベントかを判定
+    if (req.body.type === "url_verification") {
+      console.log("url_verification", challenge);
+      res.status(200).json({
+        challenge,
+      });
+      return;
+    }
 
-    // バリデーション
     if (!url) {
       res.status(400).json({
         error: "url は必須です",
@@ -58,11 +65,11 @@ app.post(
       });
       return;
     }
+    // console.log("challenge", challenge);
 
     const response = await agent.generateText(url);
-    console.log(response.text);
-
-    res.json({
+    console.log("response", response.text);
+    res.status(200).json({
       summary: response.text,
       challenge,
     });
