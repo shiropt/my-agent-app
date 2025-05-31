@@ -64,7 +64,7 @@ app.post(
 
     res.json({
       summary: response.text,
-      challenge: challenge,
+      challenge,
     });
   }
 );
