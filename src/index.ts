@@ -1,10 +1,10 @@
 import { VoltAgent, Agent } from "@voltagent/core";
 import { GoogleGenAIProvider } from "@voltagent/google-ai";
 import { weatherTool, urlSummarizerTool } from "./tools/index.js";
-
+const apiKey = process.env.GEMINI_API_KEY || "";
 // Using API Key configuration from above
 const googleProvider = new GoogleGenAIProvider({
-  apiKey: process.env.GEMINI_API_KEY,
+  apiKey,
 });
 // Or using Vertex AI configuration
 // const googleProvider = new GoogleGenAIProvider({ project: '...', location: '...' });
