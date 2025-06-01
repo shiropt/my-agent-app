@@ -60,6 +60,8 @@ async function sendToSlack(
       const timestamp = threadId.substring(1); // pを除去
       thread_ts = `${timestamp.substring(0, 10)}.${timestamp.substring(10)}`;
     }
+    console.log("threadId:", threadId);
+    console.log("thread_ts:", thread_ts);
 
     // まずthread_tsを含めて送信を試行
     const payloadWithThread = {
