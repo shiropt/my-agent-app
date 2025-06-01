@@ -65,7 +65,7 @@ async function sendToSlack(
 
     // まずthread_tsを含めて送信を試行
     const payloadWithThread = {
-      text: `🤖 AI要約結果:\n${text}`,
+      text: `🤖 *要約結果*\n${text}`,
       thread_ts,
       reply_broadcast: false,
     };
