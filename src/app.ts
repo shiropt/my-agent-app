@@ -139,9 +139,8 @@ app.post(
 
     // リクエストボディの検証
     if (!link || !message) {
-      res.status(400).json({
-        error: "linkとmessageは必須です",
-        code: "400",
+      res.status(200).json({
+        summary: "不正な値です。",
       });
       return;
     }
@@ -156,9 +155,8 @@ app.post(
 
       if (!url) {
         console.log("URLが抽出できませんでした。メッセージ内容:", message);
-        res.status(400).json({
-          error: "メッセージからURLを抽出できませんでした",
-          code: "400",
+        res.status(200).json({
+          summary: "URLを抽出できませんでした",
         });
         return;
       }
@@ -175,6 +173,10 @@ app.post(
         console.error(
           `❌ Slackへの送信でエラーが発生しましたが、処理を続行します: ${slackError}`
         );
+        res.status(200).json({
+          summary: "要約に失敗しました。",
+        });
+        return;
       }
 
       res.status(200).json({
@@ -189,9 +191,9 @@ app.post(
         requestMessage: message,
         extractedUrl: extractUrlFromMessage(message),
       });
-      res.status(500).json({
-        error: "内部サーバーエラーが発生しました",
-        code: "500",
+
+      res.status(200).json({
+        summary: error instanceof Error ? error.message : String(error),
       });
     }
   }
